@@ -1,0 +1,11 @@
+[package]
+name = "rust-mockdata"
+version = "2.0.0"
+edition = "2021"
+repository = "https://github.com/linuxfanboy4/mockdata.git"
+homepage = "https://github.com/linuxfanboy4/mockdata"
+license = "MIT"
+readme = "README.md" 
+authors = ["Calestial Ashley <calestialashley@gmail.com>"]
+
+[dependencies]
