@@ -31,12 +31,19 @@ impl MockData {
             .collect()
     }
 
-    pub fn name(&mut self) -> String {
+    pub fn first_name(&mut self) -> String {
         let first_names = ["Alice", "Bob", "Charlie", "David", "Eve"];
-        let last_names = ["Smith", "Johnson", "Williams", "Brown", "Davis"];
+        first_names[self.integer(0, first_names.len() as i64 - 1) as usize].to_string()
+    }
 
-        let first = first_names[self.integer(0, first_names.len() as i64 - 1) as usize];
-        let last = last_names[self.integer(0, last_names.len() as i64 - 1) as usize];
+    pub fn last_name(&mut self) -> String {
+        let last_names = ["Smith", "Johnson", "Williams", "Brown", "Davis"];
+        last_names[self.integer(0, last_names.len() as i64 - 1) as usize].to_string()
+    }
+
+    pub fn name(&mut self) -> String {
+        let first = self.first_name();
+        let last = self.last_name();
 
         format!("{} {}", first, last)
     }
@@ -104,6 +111,32 @@ impl MockData {
         )
     }
 
+    pub fn adjective(&mut self) -> String {
+        let words = ["other", "new", "good", "high", "old", "great", "big", "small", "large", "national", "young", "different", "black", "long", "little", "important", "political", "bad", "white", "real", "best", "right", "social", "only", "public", "sure", "low", "early", "able", "human", "local", "late", "hard", "major", "better", "economic", "strong", "possible", "whole", "free", "military", "federal", "international", "full", "special", "easy", "clear", "recent", "certain", "personal", "open", "red", "difficult", "available", "likely", "short", "single", "medical", "current", "wrong", "private", "past", "foreign", "fine", "common", "poor", "natural", "significant", "similar", "hot", "dead", "central", "happy", "serious", "ready", "simple", "left", "physical", "general", "environmental", "financial", "blue", "democratic", "dark", "various", "entire", "close", "legal", "religious", "cold", "final", "main", "green", "nice", "huge", "popular", "traditional", "cultural"];
+        words[self.integer(0, words.len() as i64 - 1) as usize].to_string()
+    }
+
+    pub fn noun(&mut self) -> String {
+        let words = ["time", "year", "people", "way", "day", "man", "thing", "woman", "life", "child", "world", "school", "state", "family", "student", "group", "country", "problem", "hand", "part", "place", "case", "week", "company", "system", "program", "question", "work", "government", "number", "night", "point", "home", "water", "room", "mother", "area", "money", "story", "fact", "month", "lot", "right", "study", "book", "eye", "job", "word", "business", "issue", "side", "kind", "head", "house", "service", "friend", "father", "power", "hour", "game", "line", "end", "member", "law", "car", "city", "community", "name", "president", "team", "minute", "idea", "kid", "body", "information", "back", "parent", "face", "others", "level", "office", "door", "health", "person", "art", "war", "history", "party", "result", "change", "morning", "reason", "research", "girl", "guy", "moment", "air", "teacher", "force", "education"];
+        words[self.integer(0, words.len() as i64 - 1) as usize].to_string()
+    }
+
+    pub fn color(&mut self) -> String {
+        let words = ["red", "orange", "yellow", "green", "blue", "purple", "white", "black", "cyan", "magenta"];
+        words[self.integer(0, words.len() as i64 - 1) as usize].to_string()
+    }
+
+    pub fn word(&mut self) -> String {
+        let i = self.integer(0, 2);
+        println!("Generated random integer {}", i);
+        match i {
+            0 => self.adjective(),
+            1 => self.noun(),
+            2 => self.color(),
+            _ => "the".to_string(),
+        }
+    }
+
     pub fn paragraph(&mut self, sentences: usize) -> String {
         let sentence_lengths: Vec<usize> = (0..sentences)
             .map(|_| self.integer(5, 15) as usize)
@@ -117,16 +150,11 @@ impl MockData {
     }
 
     pub fn sentence(&mut self, words: usize) -> String {
-        let word_lengths: Vec<usize> = (0..words)
-            .map(|_| self.integer(3, 10) as usize)
-            .collect();
-
-        let mut sentence = word_lengths
-            .into_iter()
-            .map(|len| self.string(len))
+        let mut sentence = (0..words)
+            .map(|_| self.word())
             .collect::<Vec<String>>()
             .join(" ");
-        
+
         sentence.push('.');
         sentence
     }
